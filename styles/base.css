@@ -82,6 +82,10 @@ main {
     text-align: left;
 }
 
+.card ul li {
+    margin-bottom: 0.75rem;
+}
+
 .img-right {
     float: right;
     margin: 0 0 10px 15px;
@@ -155,23 +159,6 @@ nav ul {
 .navigation a:active {
     color: white;
     text-decoration: none;}
-
-.section1-content {
-    grid-column: 1 / 2;
-    grid-row: 2;
-    background: #dcdcdc;
-    padding: 2rem;
-    min-height: 300px;
-    font-size: 1.5rem;
-}
-
-.section2-content {
-    grid-column: 2 / 3;
-    grid-row: 2;
-    background: white;
-    padding: 2rem;
-    font-size: 1.5rem;
-}
 
 .footer {
     grid-column: 1 / 3;
