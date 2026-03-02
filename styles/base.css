@@ -153,12 +153,9 @@ nav ul {
 
 }
 
-.navigation a:link,
-.navigation a:visited,
-.navigation a:hover,
-.navigation a:active {
-    color: white;
-    text-decoration: none;}
+nav a:hover {
+    text-decoration: overline;
+}
 
 .footer {
     grid-column: 1 / 3;
