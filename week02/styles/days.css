@@ -1,0 +1,21 @@
+body
+{
+    margin: .5rem auto;
+    padding: 0;
+    width: 500px;
+}
+
+h1,
+#today
+{
+    text-align: center;
+    color: darkblue;
+}
+
+p
+{
+    background-color: #eee;
+    border: 1px solid #999;
+    padding: .35rem;
+
+}

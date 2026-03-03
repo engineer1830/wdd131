@@ -1,0 +1,10 @@
+@media screen and (min-width: 500px) {
+    h1 {
+        color: white;
+        background: black;
+    }
+
+    main {
+        grid-template-columns: 1fr 1fr;
+    }
+}
