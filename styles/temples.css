@@ -24,7 +24,6 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background-color: #228B22;  */
     background-color: #660033;
     color: white;
     padding: 1rem;
@@ -99,7 +98,7 @@ nav {
 {
     grid-column: 1 / 3;
     grid-row: 3;
-    background: #228B22;
+    background: #660033;
     color: white;
     padding: 2rem;
     text-align: center;
