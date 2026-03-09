@@ -70,11 +70,17 @@ nav {
 }
 
 #menu {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     font-size: 2rem;
     border: 0;
     background: none;
     cursor: pointer;
-    color: #000;
+    color: white;
     position: absolute;
     top: 1rem;
     right: 1rem;
