@@ -1,3 +1,13 @@
+:root
+{
+    /* --primary-color: blue;
+    --secondary-color: black;
+    --accent-color1: darkgrey;
+    --accent-color2: #000080; */
+    --heading-font: Helvetica, sans-serif, "Arial";
+    --body-font: "Times New Roman", "Arial", sans-serif;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -56,6 +66,16 @@ section {
 h2 {
     text-align: center;
     margin-bottom: 0.5rem;
+}
+
+h2::after {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: #58181f;
+    margin: 0.5rem auto 0;
+    border-radius: 2px;
 }
 
 .data {
