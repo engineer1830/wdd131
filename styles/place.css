@@ -123,7 +123,6 @@ footer {
         padding: 1.5rem;
         border-radius: 10px;
         width: 300px;
-        /* max-width: 350px; */
     }
 
     section.data {
@@ -134,9 +133,7 @@ footer {
     section.weather
     {
         position: absolute;
-        /* bottom: 0%;
-        right: 5%; */
-        bottom: 110px;
+        bottom: 10px;
         right: 40px;
     }
 
