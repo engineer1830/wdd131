@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*MOBILE-FIRST BASE LAYOUT (0–749px)*/
+
+body
+{
+    min-height: 100vh;
+    font-family: "Roboto", sans-serif;
+    background: rgb(221, 245, 250);
+}
+
+/* Desktop expansion capability */
+.page {
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+/* Mobile limits */
+.mobile-frame {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+header {
+    background: #58181f;
+    color: white;
+    text-align: center;
+    padding: 1.5rem 1rem;
+}
+
+picture {
+    display: block;
+    width: 100%;
+}
+
+picture img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    display: block;
+    margin-bottom: 0rem;
+}
+
+section {
+    border: 1px solid black;
+    max-width: 500px;
+    margin-bottom: 0rem;
+    padding: 1rem;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.data {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.data li {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.label {
+    text-align: right;
+}
+
+.colon {
+    text-align: center;
+    padding-left: 1.5px;
+    padding-right: 3px;
+}
+
+.value {
+    text-align: left;
+}
+
+.weather-icon {
+    display: block;
+    margin: 0.5rem auto 1rem auto;
+    width: 100px;
+    height: auto;
+    max-width: 100%;
+}
+
+footer {
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 0rem;
+    border: 1px solid black;
+    padding: 1rem;
+    color: white;
+    background: #58181f;
+}
+
+/*DESKTOP BREAKPOINT (750px+)*/
+
+@media (min-width: 1000px) {    
+    .mobile-frame {
+        max-width: none;
+        padding: 2rem;
+    }
+    picture {
+        position: relative;
+    }
+
+    picture img {
+        max-width: none;
+    }
+
+    section {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.35); 
+        padding: 1.5rem;
+        border-radius: 10px;
+        width: 300px;
+        /* max-width: 350px; */
+    }
+
+    section.data {
+        top: 140px;
+        left: 40px;
+    }
+
+    section.weather
+    {
+        position: absolute;
+        /* bottom: 0%;
+        right: 5%; */
+        bottom: 110px;
+        right: 40px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .data {
+        max-width: 700px;
+    }
+}
+

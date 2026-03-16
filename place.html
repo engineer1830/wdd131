@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WDD131 &mdash; Week03 - Country Page Assignment - Jesse Hamilton</title>
+    <meta name="description" content="Week03 Country Page by Jesse Hamilton">
+    <meta name="author" content="Jesse Hamilton">
+    <link rel="stylesheet" href="styles/place.css">
+    <script src="scripts/place.js" defer></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page">
+        <div class="mobile-frame">
+    <header>
+        <h1>United States of America</h1>
+    </header>
+    <main>
+        <picture>
+            <source srcset="images/wavesofgrain.webp" media="(min-width: 1000px)">
+            <img src="images/sol.jpg" alt="Statue of Liberty">
+        </picture>
+        <section class="data">
+            <h2>Data</h2>
+            <ul class="data">
+                <li><span class="label">Area</span><span class="colon">:</span><span class="value"> 3,618,780 sq mi</span></li>
+                <li><span class="label">Population</span><span class="colon">:</span><span class="value"> 342,373,738</span></li>
+                <li><span class="label">Capital</span><span class="colon">:</span><span class="value"> Washington, D.C.</span></li>
+                <li><span class="label">Language</span><span class="colon">:</span><span class="value"> English</span></li>
+                <li><span class="label">Currency</span><span class="colon">:</span><span class="value"> Dollar - USD</span></li>
+                <li><span class="label">Time Zones</span><span class="colon">:</span><span class="value"> UTC -4 &mdash; UTC-10</span></li>
+                <li><span class="label">Calling Code</span><span class="colon">:</span><span class="value"> +1</span></li>
+            </ul>
+        </section>
+        <section class="weather">
+            <h2>Weather</h2>
+            <img src="images/weather.svg" class="weather-icon" alt="weather icon" width="10px">
+            <ul class="data">
+                <li><span class="label">Temperature</span><span class="colon">:</span><span class="value">105 F</span></li>
+                <li><span class="label">Conditions</span><span class="colon">:</span><span class="value">Sunny</span></li>
+                <li><span class="label">Wind</span><span class="colon">:</span><span class="value">3 mph</span></li>
+                <li><span class="label">Wind Chill</span><span class="colon">:</span><span id="windchill" class="value"></span></li>
+            </ul>
+        </section>
+    </main>
+    <footer class="footer">
+        <p>&copy; <span id="currentyear"></span> | Jesse Hamilton | USA</p>
+        <p>Last Modification: <span id="lastModified"></span></p>
+    
+    </footer>
+</div>
+</div>
+</body>
+</html>
