@@ -132,7 +132,7 @@ footer {
 
     section.weather
     {
-        position: absolute;
+        /* position: absolute; */
         bottom: 10px;
         right: 40px;
     }
