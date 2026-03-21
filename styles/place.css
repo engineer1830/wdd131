@@ -150,11 +150,14 @@ footer {
         left: 40px;
     }
 
-    section.weather
-    {
+    section.weather {
         position: absolute;
         bottom: 10px;
         right: 40px;
+    }
+
+    .weather-icon {
+        display: none;
     }
 
     h1 {

@@ -1,0 +1,39 @@
+@media screen and (min-width: 500px)
+{
+
+    h1
+    {
+        color: white;
+        background: black;
+    }
+
+    .gallery-grid
+    {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        max-width: 1500px;
+        margin: 0 auto;
+    }
+
+    .gallery-grid figure
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #menu
+    {
+        display: none;
+        /* hide hamburger button */
+    }
+
+    .navigation ul
+    {
+        display: flex;
+        /* show menu */
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+}

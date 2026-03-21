@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WDD 131 - Lazy Loading Picture Album Assignment Week02 - Jesse Hamilton">
+    <title>WDD 131 | Lazy Loading Picture Album Activity | Jesse Hamilton</title>
+    <meta name="author" content="Jesse Hamilton">
+
+    <link rel="stylesheet" href="styles/pictures-lazy.css">
+    <!-- <link rel="stylesheet" href="styles/temples-large.css"> -->
+    <script src="scripts/temples.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <header>
+        <div class="site-title">Temple Album</div>
+        <button type="button" id="menu" aria-label="Toggle navigation menu"></button>
+        <nav class="navigation">
+            <ul>
+                <li><a href="https://www.churchofjesuschrist.org/?lang=eng" target="_blank">Home</a></li>
+                <li><a href="https://www.churchofjesuschrist.org/?lang=eng" target="_blank">Old</a></li>
+                <li><a href="https://www.churchofjesuschrist.org/?lang=eng" target="_blank">New</a></li>
+                <li><a href="https://www.churchofjesuschrist.org/?lang=eng" target="_blank">Large</a></li>
+                <li><a href="https://www.churchofjesuschrist.org/?lang=eng" target="_blank">Small</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Temple Album</h1>
+        <div class="gallery-grid">
+            <figure>
+                <img src="images/kirtland.jpg" alt="Picture of Kirtland Ohio Temple" loading="lazy" width="600">
+                <figcaption>Kirtland, Ohio Temple</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slc.jpg" alt="Picture of Salt Lake City Temple" loading="lazy" width="600">
+                <figcaption>Salt Lake City Temple</figcaption>
+            </figure>
+            <figure>
+                <img src="images/nauvoo.jpg" alt="Picture of Nauvoo Illinois Temple" loading="lazy" width="600">
+                <figcaption>Nauvoo, Illinois Temple</figcaption>
+            </figure>
+            <figure>
+                <img src="images/payson.jpg" alt="Picture of Payson, UT Temple" loading="lazy" width="600">
+                <figcaption>Payson, Utah Temple</figcaption>
+            </figure>
+            <figure>
+                <img src="images/portland.jpg" alt="Picture of Portland, OR Temple" loading="lazy" width="600">
+                <figcaption>Portland, Oregon Temple</figcaption>
+            </figure>
+            <figure>
+                <img src="images/richmond.jpg" alt="Picture of Richmond, VA Temple" loading="lazy" width="600">
+                <figcaption>Richmond, Virginia Temple</figcaption>
+            </figure>
+            <figure>
+                <img src="images/gilbert.jpg" alt="Picture of Gilber, AZ Temple" loading="lazy" width="600">
+                <figcaption>Gilbert, Arizona Temple</figcaption>
+            </figure>
+            <figure>
+                <img src="images/rome.jpg" alt="Picture of Rome, Italy Temple" loading="lazy" width="600">
+                <figcaption>Rome, Italy Temple</figcaption>
+            </figure>
+            <figure>
+                <img src="images/wdc.jpg" alt="Picture Washington, D.C. of  Temple" loading="lazy" width="600">
+                <figcaption>Washington, D.C. Temple</figcaption>
+            </figure>
+        </div>
+    </main>
+    <footer class="footer">
+        <p>&copy; <span id="currentyear"></span> | Jesse Hamilton | USA</p>
+        <p>Last Modification: <span id="lastModified"></span></p>
+    </footer>
+</body>
+
+</html>
