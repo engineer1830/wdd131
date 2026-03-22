@@ -118,27 +118,23 @@ function getDedicatedYear(temple) {
     return year;
 }
 
-const currentYear = new Date().getFullYear();
-const oldCutoff = currentYear - 100;
-const newCutoff = currentYear - 20;
-
 function filterOldTemples() {
-    const oldList = temples.filter(temple => getDedicatedYear(temple) <= oldCutoff);
+    const oldList = temples.filter(temple => getDedicatedYear(temple) < 1900);
     createTempleCard(oldList);
 }
 
 function filterNewTemples() {
-    const newList = temples.filter(temple => getDedicatedYear(temple) >= newCutoff);
+    const newList = temples.filter(temple => getDedicatedYear(temple) > 2000);
     createTempleCard(newList);
 }
 
 function filterLargeTemples() {
-    const largeList = temples.filter(temple => temple.area > 60000);
+    const largeList = temples.filter(temple => temple.area > 90000);
     createTempleCard(largeList);
 }
 
 function filterSmallTemples() {
-    const smallList = temples.filter(temple => temple.area < 15000);
+    const smallList = temples.filter(temple => temple.area < 10000);
     createTempleCard(smallList);
 }
 
