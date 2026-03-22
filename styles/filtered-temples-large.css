@@ -5,7 +5,9 @@
     {
         color: white;
         background: black;
+        width: 100%;
     }
+
 
     .gallery-grid
     {
@@ -16,11 +18,26 @@
         margin: 0 auto;
     }
 
+    .gallery-grid img
+    {
+        width: auto;
+        height: auto;
+        display: block;   }
+
     .gallery-grid figure
     {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .gallery-grid section {
+        border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 1rem;
+            /* background: #e5e5e5; */
+            background: #e7e7e7;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     #menu

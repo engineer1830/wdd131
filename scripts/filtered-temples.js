@@ -74,7 +74,7 @@ const temples = [
         dedicated: "2014, March, 2",
         area: 85326,
         imageUrl:
-            "https://content.churchofjesuschrist.org/templesldsorg/bc/Temples/photo-galleries/gilbert-arizona/320x200/gilbert-arizona-temple-exterior-1207309-wallpaper.jpg"
+            "https://content.churchofjesuschrist.org/templesldsorg/bc/Temples/photo-galleries/gilbert-arizona/400x250/gilbert-arizona-temple-exterior-1207309-wallpaper.jpg"
     },
     {
         templeName: "Portland Oregon",
@@ -82,7 +82,7 @@ const temples = [
         dedicated: "1989, August, 19-21",
         area: 80500,
         imageUrl:
-            "https://content.churchofjesuschrist.org/templesldsorg/bc/Temples/photo-galleries/portland-oregon/2018/200x320/Portland-Oregon-Temple09.jpg"
+            "https://content.churchofjesuschrist.org/templesldsorg/bc/Temples/photo-galleries/portland-oregon/400x250/portland-temple-lds-1079112-wallpaper.jpg"
     },
     {
         templeName: "Salt Lake Temple",
@@ -90,14 +90,86 @@ const temples = [
         dedicated: "1893, April, 6-24",
         area: 382207,
         imageUrl:
-            "https://content.churchofjesuschrist.org/templesldsorg/bc/Temples/photo-galleries/salt-lake-city-utah/2018/200x320/slctemple12.jpg"
+            "https://content.churchofjesuschrist.org/templesldsorg/bc/Temples/photo-galleries/salt-lake-city-utah/2018/400x250/slctemple7.jpg"
     },
-// Add more temple objects here...
+    {
+        templeName: "Boston Massachusetts Temple",
+        location: "Belmont, Massachusetts",
+        dedicated: "2000, October, 1",
+        area: 69600,
+        imageUrl:
+            "https://content.churchofjesuschrist.org/templesldsorg/bc/Temples/photo-galleries/boston-massachusetts/400x250/boston-temple-lds-945541-wallpaper.jpg"
+    },
+    {
+        templeName: "Nauvoo Illinois",
+        location: "Nauvoo, Illinois",
+        dedicated: "1846, May, 1-3",
+        area: 50000,
+        imageUrl:
+            "https://content.churchofjesuschrist.org/templesldsorg/bc/Temples/photo-galleries/nauvoo-illinois/400x250/nauvoo-temple-756496-wallpaper.jpg"
+    },
 ];
-  
 
-function createTempleCard() {
-    temples.forEach(temple => {
+function getDedicatedYear(temple) {
+    const parts = temple.dedicated.split(",");
+    const year = parseInt(parts[0].trim());
+    return year;
+}
+
+const currentYear = new Date().getFullYear();
+const oldCutoff = currentYear - 100;
+const newCutoff = currentYear - 20;
+
+function filterOldTemples() {
+    const oldList = temples.filter(temple => getDedicatedYear(temple) <= oldCutoff);
+    createTempleCard(oldList);
+}
+
+function filterNewTemples() {
+    const newList = temples.filter(temple => getDedicatedYear(temple) >= newCutoff);
+    createTempleCard(newList);
+}
+
+function filterLargeTemples() {
+    const largeList = temples.filter(temple => temple.area > 60000);
+    createTempleCard(largeList);
+}
+
+function filterSmallTemples() {
+    const smallList = temples.filter(temple => temple.area < 15000);
+    createTempleCard(smallList);
+}
+
+document.querySelector("#home").addEventListener("click", e => {
+    e.preventDefault();
+    createTempleCard(temples);
+});
+
+document.querySelector("#old").addEventListener("click", e => {
+    e.preventDefault();
+    filterOldTemples();
+});
+
+document.querySelector("#new").addEventListener("click", e => {
+    e.preventDefault();
+    filterNewTemples();
+});
+
+document.querySelector("#large").addEventListener("click", e => {
+    e.preventDefault();
+    filterLargeTemples();
+});
+
+document.querySelector("#small").addEventListener("click", e => {
+    e.preventDefault();
+    filterSmallTemples();
+});
+
+function createTempleCard(list) {
+    const grid = document.querySelector(".gallery-grid");
+    grid.innerHTML = "";
+    
+    list.forEach(temple => {
         let card = document.createElement("section");
         let tname = document.createElement("h3");
         let location = document.createElement("p");
@@ -120,8 +192,8 @@ function createTempleCard() {
         card.appendChild(area);
         card.appendChild(img);
 
-        document.querySelector(".gallery-grid").appendChild(card);
+        grid.appendChild(card);
     });
 }
 
-createTempleCard();
+createTempleCard(temples);
