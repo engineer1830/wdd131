@@ -169,7 +169,7 @@ function createTempleCard(list) {
     const grid = document.querySelector(".gallery-grid");
     grid.innerHTML = "";
     
-    list.forEach(temple => {
+    list.forEach((temple, index) => {
         let card = document.createElement("section");
         let tname = document.createElement("h3");
         let location = document.createElement("p");
@@ -184,6 +184,13 @@ function createTempleCard(list) {
 
         img.setAttribute("src", temple.imageUrl);
         img.setAttribute("alt", temple.templeName);
+        
+        if (index === 0) {
+            img.fetchPriority = "high";
+        } else {
+            img.loading = "lazy";
+        } 
+
         img.setAttribute("loading", "lazy");
 
         card.appendChild(tname);
