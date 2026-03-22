@@ -125,11 +125,6 @@ nav
     font-size: 1.25rem;
 }
 
-main h1
-{
-    grid-column: 1 / -1;
-}
-
 .gallery-grid section
 {
     display: flex;
