@@ -182,14 +182,19 @@ function createTempleCard(list) {
 
         img.setAttribute("src", temple.imageUrl);
         img.setAttribute("alt", temple.templeName);
+        img.decoding = "async";
+
+        img.width = 400;
+        img.height = 250;
         
         if (index === 0) {
             img.fetchPriority = "high";
+            img.loading = "eager";
         } else {
             img.loading = "lazy";
         } 
 
-        img.setAttribute("loading", "lazy");
+        // img.setAttribute("loading", "lazy");
 
         card.appendChild(tname);
         card.appendChild(location);
