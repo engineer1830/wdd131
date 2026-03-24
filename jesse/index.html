@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Simulator</title>
+
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script/script.js" defer></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Retirement Simulator</h1>
+
+        <div class="grid">
+            <label>Age</label><input id="age" value="30">
+            <label>Gender (m/f)</label><input id="gender" value="m">
+            <label>Retire Age</label><input id="retireAge" value="65">
+            <label>Savings ($)</label><input id="lump" value="50000">
+            <label>Salary ($)</label><input id="salary" value="70000">
+            <label>Invest %</label><input id="invest" value="10">
+            <label>Stock Return (%)</label><input id="stockRate" value="7">
+            <label>Bond Return (%)</label><input id="bondRate" value="3">
+            <label>Salary Growth (%)</label><input id="growth" value="2">
+            <label>Inflation (%)</label><input id="inflation" value="2">
+            <label>Withdraw %</label><input id="withdraw" value="4">
+            <label>Monte Carlo Runs</label><input id="runs" value="500">
+        </div>
+
+        <button id="runBtn">Run Simulation</button>
+
+        <div id="output"></div>
+
+        <canvas id="chart"></canvas>
+
+    </div>
+
+</body>
+
+</html>
