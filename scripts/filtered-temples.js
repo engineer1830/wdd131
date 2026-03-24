@@ -184,8 +184,8 @@ function createTempleCard(list) {
         img.setAttribute("alt", temple.templeName);
         img.decoding = "async";
 
-        img.width = 400;
-        img.height = 250;
+        // img.width = 400;
+        // img.height = 250;
         
         if (index === 0) {
             img.fetchPriority = "high";
