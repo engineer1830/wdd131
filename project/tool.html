@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Simulator</title>
+
+    <link rel="stylesheet" href="styles/tool.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/tool.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <div class="site-title">Retirement and Saving Planning</div>
+        <button type="button" id="menu" aria-label="Toggle navigation menu"></button>
+        <nav class="navigation">
+            <ul>
+                <li><a href="siteplan.html" id="home">Home</a></li>
+                <li><a href="principles.html" id="pnp" target="_blank">Philosophy and Principles</a></li>
+                <li><a href="phases.html" id="phases" target="_blank">Phases</a></li>
+                <li><a href="vehicles.html" id="vehicles" target="_blank">Investment Vehicles</a></li>
+                <li><a href="resources.html" id="resources" target="_blank">Resources</a></li>
+                <li><a href="tool.html" id="tool" target="_blank">Planning Tool</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Retirement Simulator</h1>
+
+        <div class="grid">
+            <label>Age</label><input id="age" value="40">
+            <label>Gender (m/f)</label><input id="gender" value="m">
+            <label>Retire Age</label><input id="retireAge" value="65">
+            <label>Savings ($)</label><input id="lump" value="100000">
+            <label>Salary ($)</label><input id="salary" value="125000">
+            <label>Invest %</label><input id="invest" value="10">
+            <label>Stock Return (%)</label><input id="stockRate" value="7">
+            <label>Bond Return (%)</label><input id="bondRate" value="3">
+            <label>Salary Growth (%)</label><input id="growth" value="2">
+            <label>Inflation (%)</label><input id="inflation" value="2">
+            <label>Withdraw %</label><input id="withdraw" value="4">
+            <label>Monte Carlo Runs</label><input id="runs" value="1000">
+        </div>
+
+        <button id="runBtn">Run Simulation</button>
+
+        <div id="output"></div>
+
+        <canvas id="chart"></canvas>
+
+    </div>
+
+</body>
+
+</html>
