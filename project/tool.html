@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="styles/tool.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="scripts/tool.js" defer></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- <script defer src="scripts/app.js"></script> -->
 </head>
 
 <body>
@@ -26,32 +30,130 @@
             </ul>
         </nav>
     </header>
-    <div class="container">
-        <h1>Retirement Simulator</h1>
+        <div class="logo-row">
+            <img class="side-img" src="images/prepare-small.jpg"
+                alt="Logo image for Hamilton Family Financial Planning and Tools" width="250" height="auto">
+            <img class="center-img" src="images/logo-small.jpg"
+                alt="Logo image for Hamilton Family Financial Planning and Tools" width="450" height="auto">
+            <img class="side-img" src="images/finish-small.jpg"
+                alt="Logo image for Hamilton Family Financial Planning and Tools" width="250" height="auto">
+                </div>
 
-        <div class="grid">
-            <label>Age</label><input id="age" value="40">
-            <label>Gender (m/f)</label><input id="gender" value="m">
-            <label>Retire Age</label><input id="retireAge" value="65">
-            <label>Savings ($)</label><input id="lump" value="100000">
-            <label>Salary ($)</label><input id="salary" value="125000">
-            <label>Invest %</label><input id="invest" value="10">
-            <label>Stock Return (%)</label><input id="stockRate" value="7">
-            <label>Bond Return (%)</label><input id="bondRate" value="3">
-            <label>Salary Growth (%)</label><input id="growth" value="2">
-            <label>Inflation (%)</label><input id="inflation" value="2">
-            <label>Withdraw %</label><input id="withdraw" value="4">
-            <label>Monte Carlo Runs</label><input id="runs" value="1000">
-        </div>
 
-        <button id="runBtn">Run Simulation</button>
+    <div id="retirement-simulator" class="app-container">
+        <header class="app-header">
+            <h1>Retirement Calculations with Monte Carlo</h1>
+        </header>
 
-        <div id="output"></div>
+        <main class="app-main">
+            <section class="form-section">
+                <h2>Inputs</h2>
+                <form id="retirement-form">
+                    <div class="form-grid">
+                        <label>
+                            Current age
+                            <input type="number" id="currentAge" value="35" required />
+                        </label>
 
-        <canvas id="chart"></canvas>
+                        <label>
+                            Gender (m/f)
+                            <input type="text" id="gender" value="m" maxlength="1" required />
+                        </label>
 
+                        <label>
+                            Planned retirement age
+                            <input type="number" id="retireAge" value="62" required />
+                        </label>
+
+                        <label>
+                            Current retirement savings
+                            <input type="text" inputmode="numeric" id="currentLump" value="1,000,000" required />
+                        </label>
+
+                        <label>
+                            Current annual salary
+                            <input type="text" inputmode="numeric" id="currentSalary" value="150,000" required />
+                        </label>
+
+                        <label>
+                            % of salary saved for retirement (e.g., 10 for 10%)
+                            <input type="number" id="investmentPct" value="10" step="0.1" required />
+                        </label>
+
+                        <label>
+                            Tickers (comma-separated)
+                            <input type="text" id="tickers" placeholder="e.g., VTI, BND" />
+                        </label>
+
+                        <label>
+                            Annual salary growth % (e.g., 2)
+                            <input type="number" id="salaryGrowth" value ="2" step="0.1" required />
+                        </label>
+
+                        <label>
+                            Annual withdrawal % in retirement (e.g., 5)
+                            <input type="number" id="withdrawRate" value="5" step="0.1" required />
+                        </label>
+
+                        <label>
+                            Annual inflation % (e.g., 2)
+                            <input type="number" id="inflation" value="3" step="0.1" required />
+                        </label>
+
+                        <label>
+                            Monte Carlo runs (e.g., 500)
+                            <input type="text" inputmode="numeric" id="mcRuns" value="500" required />
+                        </label>
+
+                        <label>
+                            Stock volatility % (e.g., 15)
+                            <input type="number" id="stockVol" step="0.1" value="15" required />
+                        </label>
+
+                        <label>
+                            Bond volatility % (e.g., 5)
+                            <input type="number" id="bondVol" step="0.1" value="5" required />
+                        </label>
+                    </div>
+
+                    <p class="warning">
+                        Note: Monte Carlo runs of 1000+ may freeze the UI in the browser.
+                    </p>
+
+                    <button type="submit" class="primary-btn">Can I retire?</button>
+                </form>
+            </section>
+
+            <section class="output-section">
+                <h2>Results</h2>
+                <textarea id="resultsText" rows="20" readonly></textarea>
+            </section>
+
+            <section class="charts-section">
+                <h2>Charts</h2>
+                <div class="chart-wrapper">
+                    <h3>Deterministic Balance Over Time</h3>
+                    <canvas id="balanceChart"></canvas>
+                </div>
+
+                <div class="chart-wrapper">
+                    <h3>Deterministic Withdrawals Over Time</h3>
+                    <canvas id="withdrawChart"></canvas>
+                </div>
+
+                <div class="chart-wrapper">
+                    <h3>Monte Carlo Final Legacy Distribution</h3>
+                    <canvas id="mcChart"></canvas>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>Retirement and Saving Planning &mdash; Browser Simulation</p>
+        </footer>
     </div>
-
 </body>
 
 </html>
+                
+    

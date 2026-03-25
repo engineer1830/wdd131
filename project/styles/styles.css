@@ -31,8 +31,39 @@ header
     color: white;
     padding: 1rem;
     padding-right: 3.5rem;
-    font-size: 1.5rem;
+    font-size: 2.0rem;
     min-height: 60px;
+}
+
+.logo-row
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    max-width: 100%;
+    margin: 2rem auto;
+}
+
+.side-img
+{
+    flex: 0 0 25%;
+    max-width: 100%;
+    height: auto;
+    margin-right: 0.1rem;
+}
+
+.center-img
+{
+    flex: 0 0 50%;
+    max-width: 100%;
+    height: auto;
+}
+
+.side-img:last-of-type
+{
+    margin-right: 0;
+    margin-left: 0.1rem;
 }
 
 main
@@ -73,7 +104,7 @@ nav
     list-style: none;
     margin: 0;
     padding: 0;
-    font-size: 1rem;
+    font-size: 1.25rem;
     align-items: center;
     justify-content: center;
 }
