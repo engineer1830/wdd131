@@ -68,6 +68,15 @@ select {
     justify-content: space-between;
 }
 
+.wf1 .rating-item
+{
+    display: flex;
+    flex-direction: column;
+    /* label above input */
+    align-items: center;
+    gap: 0.25rem;
+}
+
 .wf1 .rating label {
     display: flex;
     flex-direction: column;
