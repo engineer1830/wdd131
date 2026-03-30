@@ -20,6 +20,10 @@ h1 {
     text-align: center;
 }
 
+header nav {
+    display: none;
+}
+
 fieldset {
     border: none;
     padding: 0;
