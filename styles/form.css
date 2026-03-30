@@ -107,6 +107,7 @@ select {
     border-radius: 6px;
     cursor: pointer;
     font-size: 1.1rem;
+    border-bottom: none;
 }
 
 .wf1 input:required
@@ -117,10 +118,6 @@ select {
 .wf1 input:valid
 {
     border-bottom: 8px solid green;
-}
-
-.wf1 input[type="submit"] {
-    border-bottom: none;
 }
 
 .footer
