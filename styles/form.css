@@ -52,9 +52,9 @@ input[type="radio"]
 }
 
 select {
-    /* min-height: 48px; */
-    font-size: 1rem;
-    padding: 0.25rem;
+    min-height: 48px;
+    font-size: 1.25rem;
+    padding: 0.5rem;
 }
 
 .wf1 {
@@ -86,6 +86,19 @@ select {
     gap: 0.25rem;
 }
 
+.rating-label
+{
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.rating:has(input:required:invalid)
+{
+    border-bottom: 8px solid red;
+    padding-bottom: 0.5rem;
+}
+
 .wf1 select,
 .wf1 input[type="date"],
 .wf1 textarea,
@@ -94,6 +107,10 @@ select {
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 1rem;
+}
+
+.wf1 select:required {
+    border-bottom: 8px solid red;
 }
 
 .wf1 .written {
@@ -131,7 +148,9 @@ select {
     border-bottom: 8px solid red;
 }
 
-.wf1 input:valid
+.wf1 input[type="text"]:required:valid,
+.wf1 input[type="date"]:required:valid,
+.wf1 select:required:valid
 {
     border-bottom: 8px solid green;
 }
