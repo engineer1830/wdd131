@@ -172,13 +172,6 @@ select {
         font-size: 1.5rem;
     }
 
-    .wf1 .features
-    {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem 1rem;
-    }
-
     .footer
     {
         max-width: 700px;
