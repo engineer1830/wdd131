@@ -11,7 +11,7 @@
 }
 
 h1 {
-    max-width: 500px;
+    /* max-width: 500px; */
     margin: 0 auto 1rem auto;
     background-color: black;
     color: white;
