@@ -30,57 +30,48 @@ function randn() {
     return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
 }
 
-// Multi-year nominal compounding, no inflation inside
-function growYears({
+function growOneYear({
     lumpValue,
     salary,
     investmentPct,
-    stockRate,
-    bondRate,
+    stockInterest,
+    bondInterest,
     stockWeight,
     bondWeight,
     salaryGrowth = 0.02,
-    years = 1,
+    inflation = 0.0,
     randomize = false,
     stockVol = 0.15,
     bondVol = 0.05
 }) {
-    let currentLump = lumpValue;
-    let currentSalary = salary;
-
-    for (let y = 0; y < years; y++) {
-        let sr = stockRate;
-        let br = bondRate;
-
-        if (randomize) {
-            const [rs, rb] = sampleReturns(stockRate, bondRate, stockVol, bondVol);
-            sr = rs;
-            br = rb;
-        }
-
-        const monthlyContribution = (currentSalary / 12.0) * (investmentPct / 100.0);
-
-        const stockLump = currentLump * stockWeight;
-        const bondLump = currentLump * bondWeight;
-
-        const stockContrib = monthlyContribution * stockWeight;
-        const bondContrib = monthlyContribution * bondWeight;
-
-        const stockFuture = fv(sr / 12.0, 12, -stockContrib, -stockLump);
-        const bondFuture = fv(br / 12.0, 12, -bondContrib, -bondLump);
-
-        currentLump = stockFuture + bondFuture;
-        currentSalary *= (1.0 + salaryGrowth);
+    if (randomize) {
+        const [sr, br] = sampleReturns(stockInterest, bondInterest, stockVol, bondVol);
+        stockInterest = sr;
+        bondInterest = br;
     }
 
-    return {
-        futureNominal: currentLump,
-        nextSalary: currentSalary
-    };
+    const monthlyContribution = (salary / 12.0) * (investmentPct / 100.0);
+
+    const stockLump = lumpValue * stockWeight;
+    const bondLump = lumpValue * bondWeight;
+
+    const stockContrib = monthlyContribution * stockWeight;
+    const bondContrib = monthlyContribution * bondWeight;
+
+    const stockFuture = fv(stockInterest / 12.0, 12, -stockContrib, -stockLump);
+    const bondFuture = fv(bondInterest / 12.0, 12, -bondContrib, -bondLump);
+
+    const futureNominal = stockFuture + bondFuture;
+    const futureReal = futureNominal / (1.0 + inflation);
+
+    const nextSalary = salary * (1.0 + salaryGrowth);
+
+    return { futureReal, nextSalary };
 }
 
 // ---------- Data / performance ----------
 
+// Placeholder - will connect to yahoo-finance2 later
 async function fetchFundData(ticker) {
     const t = ticker.toUpperCase();
 
@@ -164,7 +155,6 @@ async function financialPerformance(tickers) {
     };
 }
 
-// ---------- Core simulation ----------
 
 function simulateRetirement({
     age,
@@ -182,7 +172,7 @@ function simulateRetirement({
     stockVol = 0.15,
     bondVol = 0.05
 }) {
-    let legacyData = []; // will store REAL (inflation-adjusted) withdrawals/balances
+    let legacyData = [];
     let currentAge = age;
     let currentLump = lumpValue;
     let currentSalary = salary;
@@ -191,46 +181,35 @@ function simulateRetirement({
     let afterModerate = currentLump;
     let lumpAtRetire = currentLump;
 
-    const balanceTimeline = [];   // nominal for charts
-    const withdrawTimeline = [];  // nominal for charts
+    const balanceTimeline = [];
+    const withdrawTimeline = [];
 
     // Aggressive phase: 20–49, 100% stocks
     if (retireAge > 20 && currentAge < 50) {
         const startAge = Math.max(currentAge, 20);
         const endAge = Math.min(retireAge, 50);
         const years = Math.max(0, endAge - startAge);
-
-        if (years > 0) {
-            const { futureNominal, nextSalary } = growYears({
+        for (let i = 0; i < years; i++) {
+            const { futureReal, nextSalary } = growOneYear({
                 lumpValue: currentLump,
                 salary: currentSalary,
                 investmentPct,
-                stockRate,
-                bondRate,
+                stockInterest: stockRate,
+                bondInterest: bondRate,
                 stockWeight: 1.0,
                 bondWeight: 0.0,
                 salaryGrowth,
-                years,
+                inflation,
                 randomize: monteCarlo,
                 stockVol,
                 bondVol
             });
-
-            // Fill timeline year by year (approximate, using linear interpolation of ages)
-            for (let i = 1; i <= years; i++) {
-                const agePoint = startAge + i;
-                // We don't have per-year breakdown from growYears, so we just record final at end of phase
-                // To keep it simple, only push at the end of the phase:
-                if (i === years) {
-                    balanceTimeline.push({ age: agePoint, balance: futureNominal });
-                }
-            }
-
-            currentAge = startAge + years;
-            currentLump = futureNominal;
+            currentLump = futureReal;
             currentSalary = nextSalary;
-            afterAggressive = currentLump;
+            currentAge += 1;
+            balanceTimeline.push({ age: currentAge, balance: currentLump });
         }
+        afterAggressive = currentLump;
     }
 
     // Moderate phase: 50–59, 65/35
@@ -238,35 +217,27 @@ function simulateRetirement({
         const startAge = Math.max(currentAge, 50);
         const endAge = Math.min(retireAge, 60);
         const years = Math.max(0, endAge - startAge);
-
-        if (years > 0) {
-            const { futureNominal, nextSalary } = growYears({
+        for (let i = 0; i < years; i++) {
+            const { futureReal, nextSalary } = growOneYear({
                 lumpValue: currentLump,
                 salary: currentSalary,
                 investmentPct,
-                stockRate,
-                bondRate,
+                stockInterest: stockRate,
+                bondInterest: bondRate,
                 stockWeight: 0.65,
                 bondWeight: 0.35,
                 salaryGrowth,
-                years,
+                inflation,
                 randomize: monteCarlo,
                 stockVol,
                 bondVol
             });
-
-            for (let i = 1; i <= years; i++) {
-                const agePoint = startAge + i;
-                if (i === years) {
-                    balanceTimeline.push({ age: agePoint, balance: futureNominal });
-                }
-            }
-
-            currentAge = startAge + years;
-            currentLump = futureNominal;
+            currentLump = futureReal;
             currentSalary = nextSalary;
-            afterModerate = currentLump;
+            currentAge += 1;
+            balanceTimeline.push({ age: currentAge, balance: currentLump });
         }
+        afterModerate = currentLump;
     }
 
     // Preserving pre-retirement: 60–retire, 50/50
@@ -274,33 +245,25 @@ function simulateRetirement({
         const startAge = Math.max(currentAge, 60);
         const endAge = retireAge;
         const years = Math.max(0, endAge - startAge);
-
-        if (years > 0) {
-            const { futureNominal, nextSalary } = growYears({
+        for (let i = 0; i < years; i++) {
+            const { futureReal, nextSalary } = growOneYear({
                 lumpValue: currentLump,
                 salary: currentSalary,
                 investmentPct,
-                stockRate,
-                bondRate,
+                stockInterest: stockRate,
+                bondInterest: bondRate,
                 stockWeight: 0.5,
                 bondWeight: 0.5,
                 salaryGrowth,
-                years,
+                inflation,
                 randomize: monteCarlo,
                 stockVol,
                 bondVol
             });
-
-            for (let i = 1; i <= years; i++) {
-                const agePoint = startAge + i;
-                if (i === years) {
-                    balanceTimeline.push({ age: agePoint, balance: futureNominal });
-                }
-            }
-
-            currentAge = startAge + years;
-            currentLump = futureNominal;
+            currentLump = futureReal;
             currentSalary = nextSalary;
+            currentAge += 1;
+            balanceTimeline.push({ age: currentAge, balance: currentLump });
         }
     }
 
@@ -309,35 +272,27 @@ function simulateRetirement({
     // Withdrawals from retireAge to 70, 50/50
     if (currentAge < 70) {
         while (currentAge < 70) {
-            const { futureNominal } = growYears({
+            const { futureReal } = growOneYear({
                 lumpValue: currentLump,
                 salary: 0.0,
                 investmentPct: 0.0,
-                stockRate,
-                bondRate,
+                stockInterest: stockRate,
+                bondInterest: bondRate,
                 stockWeight: 0.5,
                 bondWeight: 0.5,
                 salaryGrowth: 0.0,
-                years: 1,
+                inflation,
                 randomize: monteCarlo,
                 stockVol,
                 bondVol
             });
-
-            currentLump = futureNominal;
-            const withdrawAmountNominal = currentLump * withdrawRate;
-            currentLump -= withdrawAmountNominal;
+            currentLump = futureReal;
+            const withdrawAmount = currentLump * withdrawRate;
+            currentLump -= withdrawAmount;
             currentAge += 1;
-
-            // Inflation adjustment only from withdrawals onward (real dollars)
-            const yearsSinceRetire = Math.max(0, currentAge - retireAge);
-            const discountFactor = Math.pow(1.0 + inflation, yearsSinceRetire);
-            const withdrawReal = withdrawAmountNominal / discountFactor;
-            const balanceReal = currentLump / discountFactor;
-
-            legacyData.push([currentAge, withdrawReal, balanceReal]);
-            balanceTimeline.push({ age: currentAge, balance: currentLump }); // nominal
-            withdrawTimeline.push({ age: currentAge, withdrawn: withdrawAmountNominal }); // nominal
+            legacyData.push([currentAge, withdrawAmount, currentLump]);
+            balanceTimeline.push({ age: currentAge, balance: currentLump });
+            withdrawTimeline.push({ age: currentAge, withdrawn: withdrawAmount });
         }
     }
 
@@ -345,51 +300,40 @@ function simulateRetirement({
     const lifeExpectancy = gender === "m" ? 84 : 86;
     if (currentAge < lifeExpectancy) {
         while (currentAge < lifeExpectancy) {
-            const { futureNominal } = growYears({
+            const { futureReal } = growOneYear({
                 lumpValue: currentLump,
                 salary: 0.0,
                 investmentPct: 0.0,
-                stockRate,
-                bondRate,
+                stockInterest: stockRate,
+                bondInterest: bondRate,
                 stockWeight: 0.35,
                 bondWeight: 0.65,
                 salaryGrowth: 0.0,
-                years: 1,
+                inflation,
                 randomize: monteCarlo,
                 stockVol,
                 bondVol
             });
-
-            currentLump = futureNominal;
-            const withdrawAmountNominal = currentLump * withdrawRate;
-            currentLump -= withdrawAmountNominal;
+            currentLump = futureReal;
+            const withdrawAmount = currentLump * withdrawRate;
+            currentLump -= withdrawAmount;
             currentAge += 1;
-
-            const yearsSinceRetire = Math.max(0, currentAge - retireAge);
-            const discountFactor = Math.pow(1.0 + inflation, yearsSinceRetire);
-            const withdrawReal = withdrawAmountNominal / discountFactor;
-            const balanceReal = currentLump / discountFactor;
-
-            legacyData.push([currentAge, withdrawReal, balanceReal]);
-            balanceTimeline.push({ age: currentAge, balance: currentLump }); // nominal
-            withdrawTimeline.push({ age: currentAge, withdrawn: withdrawAmountNominal }); // nominal
+            legacyData.push([currentAge, withdrawAmount, currentLump]);
+            balanceTimeline.push({ age: currentAge, balance: currentLump });
+            withdrawTimeline.push({ age: currentAge, withdrawn: withdrawAmount });
         }
     }
 
-    const finalLegacyNominal = currentLump;
-    const yearsSinceRetireFinal = Math.max(0, currentAge - retireAge);
-    const finalDiscountFactor = Math.pow(1.0 + inflation, yearsSinceRetireFinal);
-    const finalLegacyReal = finalLegacyNominal / finalDiscountFactor;
+    const finalLegacy = currentLump;
 
     return {
         afterAggressive,
         afterModerate,
         lumpAtRetire,
-        finalLegacyNominal,
-        finalLegacyReal,
-        legacyData,       // real
-        balanceTimeline,  // nominal
-        withdrawTimeline  // nominal
+        finalLegacy,
+        legacyData,
+        balanceTimeline,
+        withdrawTimeline
     };
 }
 
@@ -428,8 +372,7 @@ function monteCarloSimulation({
             stockVol,
             bondVol
         });
-        // Use real legacy for MC summary
-        results.push(sim.finalLegacyReal);
+        results.push(sim.finalLegacy);
     }
 
     results.sort((a, b) => a - b);
@@ -468,7 +411,7 @@ function formatCurrency(x) {
 }
 
 function formatLegacyTable(legacyData) {
-    const headers = ["Age", "Withdrawn (Real)", "Balance (Real)"];
+    const headers = ["Age", "Withdrawn", "Balance"];
     const lines = [];
     lines.push(`| ${headers[0]} | ${headers[1]} | ${headers[2]} |`);
     lines.push(`| --- | --- | --- |`);
@@ -498,7 +441,7 @@ function renderBalanceChart(ctx, timeline) {
             labels,
             datasets: [
                 {
-                    label: "Balance (Nominal)",
+                    label: "Balance",
                     data,
                     borderColor: "rgba(74, 108, 247, 1)",
                     backgroundColor: "rgba(74, 108, 247, 0.15)",
@@ -531,7 +474,7 @@ function renderWithdrawChart(ctx, timeline) {
             labels,
             datasets: [
                 {
-                    label: "Withdrawn (Nominal)",
+                    label: "Withdrawn",
                     data,
                     backgroundColor: "rgba(255, 159, 64, 0.7)"
                 }
@@ -553,6 +496,7 @@ function renderWithdrawChart(ctx, timeline) {
 function renderMcChart(ctx, results) {
     if (mcChart) mcChart.destroy();
 
+    // Build a simple histogram
     if (results.length === 0) {
         mcChart = new Chart(ctx, {
             type: "bar",
@@ -627,8 +571,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const el = document.getElementById(id);
         if (!el) return;
 
+        // Format while typing
         el.addEventListener("input", () => formatNumberInput(el));
 
+        // Format initial value on page load
         if (el.value) {
             formatNumberInput(el);
         }
@@ -636,8 +582,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        console.log("SUBMIT FIRED");
         resultsText.value = "";
 
+        // Read inputs
         const currentAge = parseInt(
             document.getElementById("currentAge").value.trim(),
             10
@@ -675,6 +623,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const bondVol =
             parseFloat(document.getElementById("bondVol").value.trim()) / 100.0;
 
+        // Basic validation
         if (!Number.isInteger(currentAge)) {
             resultsText.value += "Please enter a valid integer for current age.\n";
             return;
@@ -715,6 +664,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "No tickers entered. Using simulated stock/bond returns.\n";
         }
 
+        // Historical / fund performance (simulated or API-backed)
         const {
             sortedFunds,
             conservative,
@@ -742,6 +692,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const stockRate = avgModerateAggressive || 0.08;
         const bondRate = avgConservative || 0.03;
 
+        // Deterministic simulation
         const sim = simulateRetirement({
             age: currentAge,
             gender,
@@ -780,24 +731,25 @@ document.addEventListener("DOMContentLoaded", () => {
             1
         )}% per year\n\n`;
 
-        resultsText.value += `Balance after aggressive phase (nominal): ${formatCurrency(
+        resultsText.value += `Balance after aggressive phase: ${formatCurrency(
             sim.afterAggressive
         )}\n`;
-        resultsText.value += `Balance after moderate phase (nominal):  ${formatCurrency(
+        resultsText.value += `Balance after moderate phase:  ${formatCurrency(
             sim.afterModerate
         )}\n`;
-        resultsText.value += `Balance at retirement (age ${retireAge}, nominal): ${formatCurrency(
+        resultsText.value += `Balance at retirement (age ${retireAge}): ${formatCurrency(
             sim.lumpAtRetire
         )}\n`;
-        resultsText.value += `Estimated remaining amount for heirs at life expectancy (real): ${formatCurrency(
-            sim.finalLegacyReal
+        resultsText.value += `Estimated remaining amount for heirs at life expectancy: ${formatCurrency(
+            sim.finalLegacy
         )}\n\n`;
 
         resultsText.value +=
-            "***** Withdrawal & Legacy Table (Real Dollars) *****\n\n";
+            "***** Withdrawal & Legacy Table (Deterministic) *****\n\n";
         resultsText.value += formatLegacyTable(sim.legacyData);
         resultsText.value += "\n";
 
+        // Monte Carlo
         const mc = monteCarloSimulation({
             nRuns: mcRuns,
             age: currentAge,
@@ -815,17 +767,18 @@ document.addEventListener("DOMContentLoaded", () => {
             bondVol
         });
 
-        resultsText.value += "\n\n***** Monte Carlo Summary (Real Legacy) *****\n\n";
+        resultsText.value += "\n\n***** Monte Carlo Summary *****\n\n";
         resultsText.value += `Runs: ${mcRuns}\n`;
-        resultsText.value += `Median final legacy (real): ${formatCurrency(
+        resultsText.value += `Median final legacy: ${formatCurrency(
             mc.median
         )}\n`;
-        resultsText.value += `10th percentile (real): ${formatCurrency(mc.p10)}\n`;
-        resultsText.value += `90th percentile (real): ${formatCurrency(mc.p90)}\n`;
-        resultsText.value += `Probability of ruin (<= 0 real): ${(mc.probRuin * 100).toFixed(
+        resultsText.value += `10th percentile: ${formatCurrency(mc.p10)}\n`;
+        resultsText.value += `90th percentile: ${formatCurrency(mc.p90)}\n`;
+        resultsText.value += `Probability of ruin (<= 0): ${(mc.probRuin * 100).toFixed(
             2
         )}%\n`;
 
+        // Charts
         renderBalanceChart(balanceCtx, sim.balanceTimeline);
         renderWithdrawChart(withdrawCtx, sim.withdrawTimeline);
         renderMcChart(mcCtx, mc.allResults);
