@@ -1,15 +1,13 @@
 /* -------------------------
    1. Reset + base
 -------------------------- */
-*
-{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body
-{
+body {
     min-height: 100vh;
     font-family: "Roboto", sans-serif;
     font-weight: 400;
@@ -20,16 +18,14 @@ body
 -------------------------- */
 header,
 main,
-footer
-{
+footer {
     max-width: 1500px;
     margin: 1rem auto;
     border: 1px solid #bbb;
     padding: 10px;
 }
 
-header
-{
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -41,8 +37,7 @@ header
     min-height: 60px;
 }
 
-main
-{
+main {
     max-width: 1500px;
     margin: 1rem auto;
     padding: 1rem;
@@ -61,14 +56,12 @@ h2 {
     text-align: center;
 }
 
-.col h3
-{
+.col h3 {
     margin-bottom: 0.5rem;
 }
 
 .two-col .col h3,
-.three-col .col h3
-{
+.three-col .col h3 {
     text-align: center;
     width: 100%;
 }
@@ -76,43 +69,37 @@ h2 {
 /* -------------------------
    4. Intro section + grid-1 on home
 -------------------------- */
-.intro
-{
+.intro {
     padding: 1rem 0;
     border-bottom: 1px solid #ccc;
 }
 
-.intro h2
-{
+.intro h2 {
     color: #660033;
     margin-bottom: 0.5rem;
     text-align: center;
 }
 
-.intro h3
-{
+.intro h3 {
     font-size: 1.5rem;
     color: #333;
     margin-bottom: 0.5rem;
 }
 
-.intro h3.summary
-{
+.intro h3.summary {
     text-align: center;
     color: #336600;
     padding-top: 2rem;
 }
 
-.intro p
-{
+.intro p {
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 1rem;
 }
 
 /* intro grid */
-.grid-1
-{
+.grid-1 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto auto;
@@ -121,22 +108,19 @@ h2 {
 }
 
 .left-col,
-.right-col
-{
+.right-col {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-.tool-row
-{
+.tool-row {
     grid-column: 1 / -1;
     display: flex;
     justify-content: center;
 }
 
-.tool-row .img-text-row
-{
+.tool-row .img-text-row {
     width: 60%;
     margin: 0 auto;
 }
@@ -144,8 +128,7 @@ h2 {
 /* -------------------------
    5. Logo row
 -------------------------- */
-.logo-row
-{
+.logo-row {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -154,23 +137,20 @@ h2 {
     margin: 2rem auto;
 }
 
-.side-img
-{
+.side-img {
     flex: 0 0 25%;
     max-width: 100%;
     height: auto;
     margin-right: 0.1rem;
 }
 
-.center-img
-{
+.center-img {
     flex: 0 0 50%;
     max-width: 100%;
     height: auto;
 }
 
-.side-img:last-of-type
-{
+.side-img:last-of-type {
     margin-right: 0;
     margin-left: 0.1rem;
 }
@@ -180,8 +160,7 @@ h2 {
 -------------------------- */
 
 /* home list */
-main ol
-{
+main ol {
     padding-left: 1.5rem;
     padding-right: 0;
     padding-top: 0.5rem;
@@ -189,19 +168,16 @@ main ol
 }
 
 
-ol
-{
+ol {
     padding: 2rem;
 }
 
 /* guiding principles list */
-.guiding-principles h3
-{
+.guiding-principles h3 {
     margin-bottom: 0.5rem;
 }
 
-.guiding-principles ol
-{
+.guiding-principles ol {
     margin-top: 0;
     padding-top: 0;
     padding-bottom: 0;
@@ -210,14 +186,12 @@ ol
 /* -------------------------
    7. Navigation for header
 -------------------------- */
-nav
-{
+nav {
     display: flex;
     max-width: 700px;
 }
 
-.navigation ul
-{
+.navigation ul {
     display: flex;
     flex-direction: row;
     gap: 1.5rem;
@@ -229,21 +203,18 @@ nav
     justify-content: center;
 }
 
-.navigation a
-{
+.navigation a {
     color: white;
     text-decoration: none;
     font-weight: 500;
 }
 
-.navigation a:hover
-{
+.navigation a:hover {
     color: lightblue;
     text-decoration: overline;
 }
 
-#menu
-{
+#menu {
     width: 48px;
     height: 48px;
     display: flex;
@@ -259,26 +230,22 @@ nav
     right: 1rem;
 }
 
-#menu::before
-{
+#menu::before {
     content: "☰";
 }
 
-#menu.open::before
-{
+#menu.open::before {
     content: "❌";
 }
 
-.navigation.open ul
-{
+.navigation.open ul {
     display: flex;
 }
 
 /* -------------------------
    8a. Image/text link rows for home
 -------------------------- */
-.img-text-row
-{
+.img-text-row {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -289,25 +256,21 @@ nav
     transition: background-color 0.3s ease;
 }
 
-.img-text-row:hover
-{
+.img-text-row:hover {
     background-color: #f0f0f0;
 }
 
-.img-text-row span
-{
+.img-text-row span {
     font-size: 1.1rem;
     flex: 1;
 }
 
-.img-text-row img
-{
+.img-text-row img {
     border-radius: 4px;
     transition: transform 0.3s ease;
 }
 
-.link-row
-{
+.link-row {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -321,20 +284,17 @@ nav
     cursor: pointer;
 }
 
-.link-row:hover
-{
+.link-row:hover {
     background-color: #f0f0f0;
     transform: scale(1.01);
 }
 
-.link-row img
-{
+.link-row img {
     border-radius: 4px;
     transition: transform 0.3s ease;
 }
 
-.link-row:hover img
-{
+.link-row:hover img {
     transform: scale(1.05);
 }
 
@@ -353,16 +313,14 @@ nav
     padding: 7px;
 }
 
-.text-block
-{
+.text-block {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.text-image-row:nth-child(even)
-{
+.text-image-row:nth-child(even) {
     flex-direction: row-reverse;
 }
 
@@ -374,19 +332,16 @@ nav
     margin-right: 8rem;
 }
 
-.text-image-row p
-{
+.text-image-row p {
     flex: 1;
     margin: 0;
 }
 
-.text-image-row img
-{
+.text-image-row img {
     border-radius: 6px;
 }
 
-.staggered-block
-{
+.staggered-block {
     max-width: 650px;
     margin: 0 auto;
 }
@@ -399,8 +354,7 @@ nav
 .invest-simple,
 .compound-interest,
 .retirement-plan,
-.simple
-{
+.simple {
     margin: 2rem 0;
     border: 1px solid black;
     border-radius: 6px;
@@ -408,19 +362,35 @@ nav
     background-color: lavender;
 }
 
+.my-choices {
+    max-width: 100%;
+    margin: 0 auto 2rem;
+    padding: 1rem 2rem;
+    border: 1px solid black;
+    border-radius: 6px;
+    background: beige;
+    }
+
+
+.my-choices h2 {
+    margin-bottom: 1rem;
+}
+
+.my-choices p {
+    margin: 0.5rem 0;
+}
+
 /* ----------------------------------
    10. Two-column layout for principles
 ----------------------------------- */
-.two-col
-{
+.two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
     margin: 2rem 0;
 }
 
-.two-col .col
-{
+.two-col .col {
     border: 1px solid black;
     border-radius: 6px;
     padding: 10px;
@@ -429,21 +399,18 @@ nav
 
 .col p,
 .col ol,
-.col ul
-{
+.col ul {
     margin-top: 0.5rem;
 }
 
-.know-row .col
-{
+.know-row .col {
     padding-right: 1rem;
 }
 
 /* -----------------------------------
    11. Three-column layout for principles
 ------------------------------------- */
-.three-col
-{
+.three-col {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
@@ -451,13 +418,11 @@ nav
     align-items: stretch;
 }
 
-.three-col ol
-{
+.three-col ol {
     padding: 0 1.5rem 1.5rem;
 }
 
-.three-col .col
-{
+.three-col .col {
     border: 1px solid black;
     border-radius: 6px;
     padding: 1.75rem 1.25rem;
@@ -468,8 +433,7 @@ nav
     background-color: #CAEBBA;
 }
 
-.three-col .col ul
-{
+.three-col .col ul {
     padding-left: 1.5rem;
     margin-top: 0.5rem;
 }
@@ -477,8 +441,7 @@ nav
 /* ------------------------------------------------
    12. Quote callout in compound interest on principles
 ------------------------------------------------- */
-.quote-callout
-{
+.quote-callout {
     font-style: italic;
     font-size: 1.1rem;
     font-weight: 600;
@@ -491,23 +454,20 @@ nav
 /* ---------------------------------
    13. Simple list tweaks on principles page
 ------------------------------------ */
-.simple ul
-{
+.simple ul {
     margin-top: 1rem;
     padding-left: 1.5rem;
     line-height: 1.6;
 }
 
-.simple ul li
-{
+.simple ul li {
     margin-bottom: 0.5rem;
 }
 
 /* -------------------------
    14. Footer
 ---------------------------- */
-.footer
-{
+.footer {
     grid-column: 1 / 3;
     grid-row: 3;
     background: #660033;
@@ -520,8 +480,7 @@ nav
 /* -------------------------
    15. Gallery grid for footer
 -------------------------- */
-.gallery-grid section
-{
+.gallery-grid section {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -533,15 +492,13 @@ nav
 ------------------------------- */
 
 main a:link,
-main a:visited
-{
+main a:visited {
     color: blue;
     text-decoration: none;
 }
 
 .navigation a:link,
-.navigation a:visited
-{
+.navigation a:visited {
     color: white;
     text-decoration: none;
 }
@@ -553,8 +510,7 @@ main a:visited
 .link-row:link,
 .link-row:visited,
 .link-row:hover,
-.link-row:active
-{
+.link-row:active {
     color: inherit;
     text-decoration: none;
 }
