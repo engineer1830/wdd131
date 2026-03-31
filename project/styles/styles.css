@@ -51,11 +51,14 @@ main
 /* -------------------------
    3. Typography
 -------------------------- */
-h1
-{
+h1 {
     text-align: center;
     color: #660033;
     font-size: 2.25rem;
+}
+
+h2 {
+    text-align: center;
 }
 
 .col h3
@@ -272,7 +275,7 @@ nav
 }
 
 /* -------------------------
-   8. Image/text link rows for home
+   8a. Image/text link rows for home
 -------------------------- */
 .img-text-row
 {
@@ -335,6 +338,59 @@ nav
     transform: scale(1.05);
 }
 
+/* --------------------------
+8b. Text/image for vehicles
+--------------------------- */
+
+.text-image-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 1rem 0;
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 7px;
+}
+
+.text-block
+{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.text-image-row:nth-child(even)
+{
+    flex-direction: row-reverse;
+}
+
+.text-image-row:nth-child(odd) {
+    margin-left: 5rem;
+}
+
+.text-image-row:nth-child(even) {
+    margin-right: 5rem;
+}
+
+.text-image-row p
+{
+    flex: 1;
+    margin: 0;
+}
+
+.text-image-row img
+{
+    border-radius: 6px;
+}
+
+.staggered-block
+{
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 /* -------------------------
    9. Full-width sections for principles
 -------------------------- */
@@ -352,9 +408,9 @@ nav
     background-color: lavender;
 }
 
-/* -------------------------
+/* ----------------------------------
    10. Two-column layout for principles
--------------------------- */
+----------------------------------- */
 .two-col
 {
     display: grid;
@@ -383,9 +439,9 @@ nav
     padding-right: 1rem;
 }
 
-/* -------------------------
+/* -----------------------------------
    11. Three-column layout for principles
--------------------------- */
+------------------------------------- */
 .three-col
 {
     display: grid;
@@ -412,9 +468,15 @@ nav
     background-color: #CAEBBA;
 }
 
-/* -------------------------
+.three-col .col ul
+{
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+/* ------------------------------------------------
    12. Quote callout in compound interest on principles
--------------------------- */
+------------------------------------------------- */
 .quote-callout
 {
     font-style: italic;
@@ -426,9 +488,9 @@ nav
     padding-top: 1.5rem;
 }
 
-/* -------------------------
+/* ---------------------------------
    13. Simple list tweaks on principles page
--------------------------- */
+------------------------------------ */
 .simple ul
 {
     margin-top: 1rem;
@@ -443,7 +505,7 @@ nav
 
 /* -------------------------
    14. Footer
--------------------------- */
+---------------------------- */
 .footer
 {
     grid-column: 1 / 3;
@@ -464,4 +526,35 @@ nav
     flex-direction: column;
     align-items: center;
     text-align: center;
+}
+
+/* ----------------------------
+    16. Site wide rules for links
+------------------------------- */
+
+main a:link,
+main a:visited
+{
+    color: blue;
+    text-decoration: none;
+}
+
+.navigation a:link,
+.navigation a:visited
+{
+    color: white;
+    text-decoration: none;
+}
+
+.img-text-row:link,
+.img-text-row:visited,
+.img-text-row:hover,
+.img-text-row:active,
+.link-row:link,
+.link-row:visited,
+.link-row:hover,
+.link-row:active
+{
+    color: inherit;
+    text-decoration: none;
 }
