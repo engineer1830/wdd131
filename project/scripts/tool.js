@@ -1,15 +1,15 @@
-/******************************************************
- *  Number Formatting
- ******************************************************/
+/* --------------------------------------------------
+ *  Number Formatting (comma in the inputs)
+-------------------------------------------------- */
 function formatNumberInput(input) {
     let raw = input.value.replace(/,/g, "");
     if (raw === "" || isNaN(raw)) return;
     input.value = Number(raw).toLocaleString();
 }
 
-/******************************************************
+/* --------------------------------------------------
  *  Financial Math
- ******************************************************/
+-------------------------------------------------- */
 function fv(rate, nper, pmt, pv) {
     if (rate === 0) return -pv - pmt * nper;
     const factor = Math.pow(1 + rate, nper);
@@ -30,10 +30,10 @@ function sampleReturns(stockRate, bondRate, stockVol = 0.15, bondVol = 0.05) {
     ];
 }
 
-/******************************************************
- *  Multi-Year Compounding WITH Per-Year Timeline
- *  (Nominal only — no inflation here)
- ******************************************************/
+/* --------------------------------------------------
+ *  Growth Engine -Multi-Year Compounding with 
+ *  Per-Year Timeline (Nominal only — no inflation here)
+-------------------------------------------------- */
 function growYearsWithTimeline({
     lumpValue,
     salary,
@@ -87,9 +87,10 @@ function growYearsWithTimeline({
     };
 }
 
-/******************************************************
+/* --------------------------------------------------
  *  Fund Performance (Simulated)
- ******************************************************/
+This is simulating due to complexities doing fund look ups
+-------------------------------------------------- */
 async function fetchFundData(ticker) {
     const t = ticker.toUpperCase();
 
@@ -155,9 +156,12 @@ async function financialPerformance(tickers) {
     };
 }
 
-/******************************************************
- *  Core Simulation
- ******************************************************/
+/* --------------------------------------------------
+ *  Core Simulation - steps through phases with various
+ *  stock/bond splits based on risk profiles approaching
+ *  retirement . . . assumes a general retirement between
+ *  60-65 as changes to risk start at age 50 in this model
+-------------------------------------------------- */
 function simulateRetirement({
     age,
     gender,
@@ -303,9 +307,11 @@ function simulateRetirement({
     };
 }
 
-/******************************************************
- *  Monte Carlo Simulation
- ******************************************************/
+/* --------------------------------------------------
+ *  Monte Carlo Simulation - engine for enabling multiple
+ *  iterations with variation expected in stock market 
+ *  performance
+-------------------------------------------------- */
 function percentile(arr, p) {
     if (arr.length === 0) return 0;
     const idx = (p / 100) * (arr.length - 1);
@@ -364,9 +370,9 @@ function monteCarloSimulation({
     };
 }
 
-/******************************************************
- *  Formatting Helpers
- ******************************************************/
+/* --------------------------------------------------
+ *  Formatting and Table Output
+-------------------------------------------------- */
 function formatCurrency(x) {
     return `$${x.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
 }
@@ -380,9 +386,9 @@ function formatLegacyTable(legacyData) {
     return out;
 }
 
-/******************************************************
+/* --------------------------------------------------
  *  Charts
- ******************************************************/
+-------------------------------------------------- */
 let balanceChart = null;
 let withdrawChart = null;
 let mcChart = null;
@@ -486,9 +492,9 @@ function renderMcChart(ctx, results) {
     });
 }
 
-/******************************************************
+/* --------------------------------------------------
  *  UI Setup
- ******************************************************/
+-------------------------------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("retirement-form");
     const resultsText = document.getElementById("resultsText");

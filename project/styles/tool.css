@@ -40,6 +40,19 @@ input
     padding: 6px;
 }
 
+.required
+{
+    color: red;
+    margin-left: 2px;
+}
+
+.label-text
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
 button
 {
     margin-top: 15px;
@@ -343,168 +356,3 @@ a:active
         grid-template-columns: 1fr;
     }
 }
-
-
-/* New above here */
-/* body
-{
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
-    padding: 20px;
-}
-
-.container
-{
-    max-width: 900px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-h1
-{
-    text-align: center;
-}
-
-.grid
-{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-label
-{
-    font-weight: bold;
-}
-
-input
-{
-    width: 100%;
-    padding: 6px;
-}
-
-button
-{
-    margin-top: 15px;
-    padding: 10px;
-    width: 100%;
-    font-size: 16px;
-    background: #0077cc;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover
-{
-    background: #005fa3;
-}
-
-#output
-{
-    margin-top: 20px;
-    white-space: pre-wrap;
-    background: #eef;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-canvas
-{
-    margin-top: 20px;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #014106;
-    color: white;
-    padding: 1rem;
-    padding-right: 3.5rem;
-    font-size: 1.5rem;
-    min-height: 60px;
-}
-
-
-.navigation a:hover
-{
-    color: lightblue;
-    text-decoration: overline;
-}
-
-a:link
-{
-    color: white;
-}
-
-a:visited
-{
-    color: white;
-}
-
-a:active
-{
-    color: white;
-}
-
-.site-title {
-    flex: 1;
-}
-
-.navigation {
-    flex: none;
-}
-
-#menu
-{
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    box-shadow: none;
-}
-
-.navigation ul
-{
-    display: flex;
-    flex-direction: row;
-    gap: 1.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.logo-row
-{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0;
-    max-width: 100%;
-    margin: 2rem auto;
-}
-
-.side-img
-{
-    flex: 0 0 25%;
-    max-width: 100%;
-    height: auto;
-    margin-right: 0.1rem;
-}
-
-.center-img
-{
-    flex: 0 0 50%;
-    max-width: 100%;
-    height: auto;
-}
-
-.side-img:last-of-type
-{
-    margin-right: 0;
-    margin-left: 0.1rem;
-} */
