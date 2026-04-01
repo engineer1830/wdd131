@@ -291,9 +291,6 @@ main {
 
 #retirement-simulator .chart-wrapper
 {
-    /* margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-    background: khaki; */
     background: white;
     padding: 1rem;
     border:1px solid black;
@@ -302,8 +299,7 @@ main {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-#retirement-simulator .chart-wrapper canvas
-{
+#retirement-simulator .chart-wrapper canvas {
     margin-top: 0;
 }
 
