@@ -1,3 +1,42 @@
+/* -----------------------------
+ *   LOCAL STORAGE setup
+ * ----------------------------- */
+
+function saveInputs() {
+    const inputs = {
+        currentAge: document.getElementById("currentAge").value,
+        retirementAge: document.getElementById("retirementAge").value,
+        contribution: document.getElementById("contribution").value,
+        returnRate: document.getElementById("returnRate").value,
+        inflationRate: document.getElementById("inflationRate").value,
+        lumpSum: document.getElementById("lumpSum").value,
+        withdrawalRate: document.getElementById("withdrawalRate").value
+    };
+
+    localStorage.setItem("retirementInputs", JSON.stringify(inputs));
+}
+
+function loadInputs() {
+    const saved = JSON.parse(localStorage.getItem("retirementInputs"));
+    if (!saved) return;
+
+    for (const key in saved) {
+        const el = document.getElementById(key);
+        if (el) el.value = saved[key];
+    }
+}
+
+function saveLastTimeline(timeline) {
+    localStorage.setItem("lastTimeline", JSON.stringify(timeline));
+}
+
+function restoreLastTimeline(ctx) {
+    const saved = JSON.parse(localStorage.getItem("lastTimeline"));
+    if (saved) {
+        renderBalanceChart(ctx, saved);
+    }
+}
+
 /* --------------------------------------------------
  *  Number Formatting
 -------------------------------------------------- */
@@ -383,6 +422,10 @@ function monteCarloSimulation({
     };
 }
 
+document.querySelectorAll("#retirement-simulator input")
+    .forEach(el => el.addEventListener("input", saveInputs));
+
+    
 /* --------------------------------------------------
  *  Formatting & Tables
 -------------------------------------------------- */
@@ -571,6 +614,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const withdrawCtxReal = document.getElementById("withdrawChartReal").getContext("2d");
     const mcCtx = document.getElementById("mcChart").getContext("2d");
 
+    loadInputs();
+
+    restoreLastTimeline(balanceCtx);
+
     ["currentLump", "currentSalary"].forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
@@ -679,3 +726,4 @@ document.addEventListener("DOMContentLoaded", () => {
     if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     if (modSpan) modSpan.textContent = document.lastModified;
 });
+
