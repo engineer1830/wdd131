@@ -5,16 +5,22 @@
 function saveInputs() {
     const inputs = {
         currentAge: document.getElementById("currentAge").value,
-        retirementAge: document.getElementById("retirementAge").value,
-        contribution: document.getElementById("contribution").value,
-        returnRate: document.getElementById("returnRate").value,
-        inflationRate: document.getElementById("inflationRate").value,
-        lumpSum: document.getElementById("lumpSum").value,
-        withdrawalRate: document.getElementById("withdrawalRate").value
+        retireAge: document.getElementById("retireAge").value,
+        currentLump: document.getElementById("currentLump").value,
+        currentSalary: document.getElementById("currentSalary").value,
+        investmentPct: document.getElementById("investmentPct").value,
+        salaryGrowth: document.getElementById("salaryGrowth").value,
+        withdrawRate: document.getElementById("withdrawRate").value,
+        inflation: document.getElementById("inflation").value,
+        stockVol: document.getElementById("stockVol").value,
+        bondVol: document.getElementById("bondVol").value,
+        mcRuns: document.getElementById("mcRuns").value,
+        tickers: document.getElementById("tickers").value
     };
 
     localStorage.setItem("retirementInputs", JSON.stringify(inputs));
 }
+
 
 function loadInputs() {
     const saved = JSON.parse(localStorage.getItem("retirementInputs"));
@@ -422,7 +428,7 @@ function monteCarloSimulation({
     };
 }
 
-document.querySelectorAll("#retirement-simulator input")
+document.querySelectorAll("#retirement-form input")
     .forEach(el => el.addEventListener("input", saveInputs));
 
     
