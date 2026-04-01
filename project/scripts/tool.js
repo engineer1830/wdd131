@@ -1,5 +1,5 @@
 /* --------------------------------------------------
- *  Number Formatting (comma in the inputs)
+ *  Number Formatting
 -------------------------------------------------- */
 function formatNumberInput(input) {
     let raw = input.value.replace(/,/g, "");
@@ -31,8 +31,7 @@ function sampleReturns(stockRate, bondRate, stockVol = 0.15, bondVol = 0.05) {
 }
 
 /* --------------------------------------------------
- *  Growth Engine -Multi-Year Compounding with 
- *  Per-Year Timeline (Nominal only — no inflation here)
+ *  Growth Engine
 -------------------------------------------------- */
 function growYearsWithTimeline({
     lumpValue,
@@ -50,8 +49,7 @@ function growYearsWithTimeline({
 }) {
     let currentLump = lumpValue;
     let currentSalary = salary;
-
-    const timeline = []; // per-year nominal balances
+    const timeline = [];
 
     for (let y = 0; y < years; y++) {
         let sr = stockRate;
@@ -89,7 +87,6 @@ function growYearsWithTimeline({
 
 /* --------------------------------------------------
  *  Fund Performance (Simulated)
-This is simulating due to complexities doing fund look ups
 -------------------------------------------------- */
 async function fetchFundData(ticker) {
     const t = ticker.toUpperCase();
@@ -157,10 +154,7 @@ async function financialPerformance(tickers) {
 }
 
 /* --------------------------------------------------
- *  Core Simulation - steps through phases with various
- *  stock/bond splits based on risk profiles approaching
- *  retirement . . . assumes a general retirement between
- *  60-65 as changes to risk start at age 50 in this model
+ *  Core Simulation (Part 1)
 -------------------------------------------------- */
 function simulateRetirement({
     age,
@@ -185,8 +179,8 @@ function simulateRetirement({
     const balanceTimeline = [];
     const withdrawTimeline = [];
     const legacyData = [];
+    const legacyDataReal = [];
 
-    // Start curve at user's age with starting lump
     balanceTimeline.push({ age: currentAge, balance: currentLump });
 
     function runPhase(startAge, endAge, stockWeight, bondWeight) {
@@ -221,13 +215,14 @@ function simulateRetirement({
     }
 
     // Accumulation phases
-    runPhase(Math.max(currentAge, 20), Math.min(retireAge, 50), 1.0, 0.0);   // Aggressive
-    runPhase(Math.max(currentAge, 50), Math.min(retireAge, 60), 0.65, 0.35); // Moderate
-    runPhase(Math.max(currentAge, 60), retireAge, 0.5, 0.5);                 // Pre-retirement
-
+    runPhase(Math.max(currentAge, 20), Math.min(retireAge, 50), 1.0, 0.0);
+    runPhase(Math.max(currentAge, 50), Math.min(retireAge, 60), 0.65, 0.35);
+    runPhase(Math.max(currentAge, 60), retireAge, 0.5, 0.5);
     const lumpAtRetire = currentLump;
 
-    // Withdrawal phase: retireAge–70, 50/50, inflation matters here
+    /* --------------------------------------------------
+     *  Withdrawal Phase (retireAge → 70)
+    -------------------------------------------------- */
     while (currentAge < 70) {
         const { futureNominal } = growYearsWithTimeline({
             lumpValue: currentLump,
@@ -250,17 +245,28 @@ function simulateRetirement({
         currentAge++;
 
         const discount = Math.pow(1 + inflation, currentAge - retireAge);
-        legacyData.push([
+
+        withdrawTimeline.push({
+            age: currentAge,
+            withdrawn: withdrawNominal,
+            withdrawnReal: withdrawNominal / discount,
+            balance: currentLump,
+            balanceReal: currentLump / discount
+        });
+
+        legacyData.push([currentAge, withdrawNominal, currentLump]);
+        legacyDataReal.push([
             currentAge,
             withdrawNominal / discount,
             currentLump / discount
         ]);
 
         balanceTimeline.push({ age: currentAge, balance: currentLump });
-        withdrawTimeline.push({ age: currentAge, withdrawn: withdrawNominal });
     }
 
-    // Legacy phase: 70–life expectancy, 35/65
+    /* --------------------------------------------------
+     *  Legacy Phase (70 → life expectancy)
+    -------------------------------------------------- */
     const lifeExpectancy = gender === "m" ? 84 : 86;
 
     while (currentAge < lifeExpectancy) {
@@ -285,14 +291,23 @@ function simulateRetirement({
         currentAge++;
 
         const discount = Math.pow(1 + inflation, currentAge - retireAge);
-        legacyData.push([
+
+        withdrawTimeline.push({
+            age: currentAge,
+            withdrawn: withdrawNominal,
+            withdrawnReal: withdrawNominal / discount,
+            balance: currentLump,
+            balanceReal: currentLump / discount
+        });
+
+        legacyData.push([currentAge, withdrawNominal, currentLump]);
+        legacyDataReal.push([
             currentAge,
             withdrawNominal / discount,
             currentLump / discount
         ]);
 
         balanceTimeline.push({ age: currentAge, balance: currentLump });
-        withdrawTimeline.push({ age: currentAge, withdrawn: withdrawNominal });
     }
 
     const finalLegacyReal =
@@ -303,14 +318,12 @@ function simulateRetirement({
         finalLegacyReal,
         balanceTimeline,
         withdrawTimeline,
-        legacyData
+        legacyData,
+        legacyDataReal
     };
 }
-
 /* --------------------------------------------------
- *  Monte Carlo Simulation - engine for enabling multiple
- *  iterations with variation expected in stock market 
- *  performance
+ *  Monte Carlo Simulation
 -------------------------------------------------- */
 function percentile(arr, p) {
     if (arr.length === 0) return 0;
@@ -371,16 +384,25 @@ function monteCarloSimulation({
 }
 
 /* --------------------------------------------------
- *  Formatting and Table Output
+ *  Formatting & Tables
 -------------------------------------------------- */
 function formatCurrency(x) {
     return `$${x.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
 }
 
 function formatLegacyTable(legacyData) {
-    let out = "| Age | Withdrawn (Real) | Balance (Real) |\n";
+    let out = "| Age | Withdrawn (Nominal) | Balance (Nominal) |\n";
     out += "| --- | --- | --- |\n";
     for (const [age, w, b] of legacyData) {
+        out += `| ${age} | ${formatCurrency(w)} | ${formatCurrency(b)} |\n`;
+    }
+    return out;
+}
+
+function formatLegacyTableReal(legacyDataReal) {
+    let out = "| Age | Withdrawn (Real) | Balance (Real) |\n";
+    out += "| --- | --- | --- |\n";
+    for (const [age, w, b] of legacyDataReal) {
         out += `| ${age} | ${formatCurrency(w)} | ${formatCurrency(b)} |\n`;
     }
     return out;
@@ -391,6 +413,7 @@ function formatLegacyTable(legacyData) {
 -------------------------------------------------- */
 let balanceChart = null;
 let withdrawChart = null;
+let withdrawChartReal = null;
 let mcChart = null;
 
 function renderBalanceChart(ctx, timeline) {
@@ -445,6 +468,51 @@ function renderWithdrawChart(ctx, timeline) {
     });
 }
 
+function renderWithdrawChartReal(ctx, timeline, inflation) {
+    const labels = timeline.map(d => d.age);
+    const withdrawnReal = timeline.map(d => d.withdrawnReal);
+    const balanceReal = timeline.map(d => d.balanceReal);
+
+    if (withdrawChartReal) withdrawChartReal.destroy();
+
+    withdrawChartReal = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels,
+            datasets: [
+                {
+                    type: "bar",
+                    label: "Withdrawn (Real)",
+                    data: withdrawnReal,
+                    backgroundColor: "rgba(255,159,64,0.7)"
+                },
+                {
+                    type: "line",
+                    label: "Balance (Real)",
+                    data: balanceReal,
+                    borderColor: "rgba(54,162,235,1)",
+                    backgroundColor: "rgba(54,162,235,0.15)",
+                    tension: 0.2,
+                    yAxisID: "y"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
+            },
+            scales: {
+                y: { ticks: { callback: v => formatCurrency(v) } }
+            }
+        }
+    });
+
+    const header = document.getElementById("realChartHeader");
+    header.textContent =
+        `Withdrawals & Balance (Real Dollars, Inflation Adjusted at ${(inflation * 100).toFixed(1)}%)`;
+}
+
 function renderMcChart(ctx, results) {
     if (mcChart) mcChart.destroy();
 
@@ -491,9 +559,8 @@ function renderMcChart(ctx, results) {
         }
     });
 }
-
 /* --------------------------------------------------
- *  UI Setup
+ *  UI Setup & Event Handling
 -------------------------------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("retirement-form");
@@ -501,6 +568,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const balanceCtx = document.getElementById("balanceChart").getContext("2d");
     const withdrawCtx = document.getElementById("withdrawChart").getContext("2d");
+    const withdrawCtxReal = document.getElementById("withdrawChartReal").getContext("2d");
     const mcCtx = document.getElementById("mcChart").getContext("2d");
 
     ["currentLump", "currentSalary"].forEach(id => {
@@ -517,70 +585,38 @@ document.addEventListener("DOMContentLoaded", () => {
         const currentAge = parseInt(document.getElementById("currentAge").value, 10);
         const gender = document.getElementById("gender").value.trim().toLowerCase();
         const retireAge = parseInt(document.getElementById("retireAge").value, 10);
-        const currentLump = parseFloat(
-            document.getElementById("currentLump").value.replace(/,/g, "")
-        );
-        const currentSalary = parseFloat(
-            document.getElementById("currentSalary").value.replace(/,/g, "")
-        );
-        const investmentPct = parseFloat(
-            document.getElementById("investmentPct").value
-        );
-        const rawTickers = document.getElementById("tickers").value.trim();
-        const salaryGrowth =
-            parseFloat(document.getElementById("salaryGrowth").value) / 100;
-        const withdrawRate =
-            parseFloat(document.getElementById("withdrawRate").value) / 100;
-        const inflation =
-            parseFloat(document.getElementById("inflation").value) / 100;
-        const mcRuns = parseInt(
-            document.getElementById("mcRuns").value,
-            10
-        );
-        const stockVol =
-            parseFloat(document.getElementById("stockVol").value) / 100;
-        const bondVol =
-            parseFloat(document.getElementById("bondVol").value) / 100;
 
-        const tickers = rawTickers
-            ? rawTickers
-                .split(",")
-                .map(t => t.trim().toUpperCase())
-                .filter(t => t.length > 0)
-            : [];
+        const lumpValue = parseFloat(document.getElementById("currentLump").value.replace(/,/g, ""));
+        const salary = parseFloat(document.getElementById("currentSalary").value.replace(/,/g, ""));
 
-        const {
-            sortedFunds,
-            conservative,
-            moderateAggressive,
-            avgConservative,
-            avgModerateAggressive
-        } = await financialPerformance(tickers.length ? tickers : ["STOCK", "BOND"]);
+        const investmentPct = parseFloat(document.getElementById("investmentPct").value) / 100;
+        const salaryGrowth = parseFloat(document.getElementById("salaryGrowth").value) / 100;
+        const withdrawRate = parseFloat(document.getElementById("withdrawRate").value) / 100;
+        const inflation = parseFloat(document.getElementById("inflation").value) / 100;
 
-        resultsText.value += "***** Historical Performance Summary *****\n";
-        for (const [ticker, info] of sortedFunds) {
-            resultsText.value += `\n${ticker}:\n  Data covers: ${info.start} to ${info.end}\n  Annualized average return: ${(info.avg_annual * 100).toFixed(2)}%\n`;
+        const stockVol = parseFloat(document.getElementById("stockVol").value) / 100;
+        const bondVol = parseFloat(document.getElementById("bondVol").value) / 100;
+
+        const mcRuns = parseInt(document.getElementById("mcRuns").value.replace(/,/g, ""), 10);
+
+        const tickersRaw = document.getElementById("tickers").value.trim();
+        const tickers = tickersRaw ? tickersRaw.split(",").map(t => t.trim()) : [];
+
+        let stockRate = 0.08;
+        let bondRate = 0.04;
+
+        if (tickers.length > 0) {
+            const perf = await financialPerformance(tickers);
+            stockRate = perf.avgModerateAggressive || 0.08;
+            bondRate = perf.avgConservative || 0.04;
         }
-
-        resultsText.value += "\n***** Conservative Funds (< 6%) *****\n";
-        for (const [ticker, r] of conservative) {
-            resultsText.value += `  ${ticker}: ${(r * 100).toFixed(2)}%\n`;
-        }
-
-        resultsText.value += "\n***** Moderate to Aggressive Funds (>= 6%) *****\n";
-        for (const [ticker, r] of moderateAggressive) {
-            resultsText.value += `  ${ticker}: ${(r * 100).toFixed(2)}%\n`;
-        }
-
-        const stockRate = avgModerateAggressive || 0.08;
-        const bondRate = avgConservative || 0.03;
 
         const sim = simulateRetirement({
             age: currentAge,
             gender,
             retireAge,
-            lumpValue: currentLump,
-            salary: currentSalary,
+            lumpValue,
+            salary,
             investmentPct,
             stockRate,
             bondRate,
@@ -592,46 +628,17 @@ document.addEventListener("DOMContentLoaded", () => {
             bondVol
         });
 
-        resultsText.value +=
-            "\n\n***** Deterministic Retirement Projection *****\n\n";
-        resultsText.value += `Starting savings: ${formatCurrency(
-            currentLump
-        )}\n`;
-        resultsText.value += `Starting salary: ${formatCurrency(
-            currentSalary
-        )}\n`;
-        resultsText.value += `Salary invested: ${investmentPct.toFixed(
-            1
-        )}%\n`;
-        resultsText.value += `Salary growth: ${(salaryGrowth * 100).toFixed(
-            1
-        )}% per year\n`;
-        resultsText.value += `Withdrawal rate: ${(withdrawRate * 100).toFixed(
-            1
-        )}% per year\n`;
-        resultsText.value += `Inflation: ${(inflation * 100).toFixed(
-            1
-        )}% per year\n\n`;
-
-        resultsText.value += `Balance at retirement (age ${retireAge}, nominal): ${formatCurrency(
-            sim.lumpAtRetire
-        )}\n`;
-        resultsText.value += `Estimated remaining amount for heirs at life expectancy (real): ${formatCurrency(
-            sim.finalLegacyReal
-        )}\n\n`;
-
-        resultsText.value +=
-            "***** Withdrawal & Legacy Table (Real Dollars) *****\n\n";
-        resultsText.value += formatLegacyTable(sim.legacyData);
-        resultsText.value += "\n";
+        renderBalanceChart(balanceCtx, sim.balanceTimeline);
+        renderWithdrawChart(withdrawCtx, sim.withdrawTimeline);
+        renderWithdrawChartReal(withdrawCtxReal, sim.withdrawTimeline, inflation);
 
         const mc = monteCarloSimulation({
             nRuns: mcRuns,
             age: currentAge,
             gender,
             retireAge,
-            lumpValue: currentLump,
-            salary: currentSalary,
+            lumpValue,
+            salary,
             investmentPct,
             stockRate,
             bondRate,
@@ -642,23 +649,33 @@ document.addEventListener("DOMContentLoaded", () => {
             bondVol
         });
 
-        resultsText.value += "\n\n***** Monte Carlo Summary (Real Legacy) *****\n\n";
-        resultsText.value += `Runs: ${mcRuns}\n`;
-        resultsText.value += `Median final legacy (real): ${formatCurrency(
-            mc.median
-        )}\n`;
-        resultsText.value += `10th percentile (real): ${formatCurrency(
-            mc.p10
-        )}\n`;
-        resultsText.value += `90th percentile (real): ${formatCurrency(
-            mc.p90
-        )}\n`;
-        resultsText.value += `Probability of ruin (<= 0 real): ${(mc.probRuin * 100).toFixed(
-            2
-        )}%\n`;
-
-        renderBalanceChart(balanceCtx, sim.balanceTimeline);
-        renderWithdrawChart(withdrawCtx, sim.withdrawTimeline);
         renderMcChart(mcCtx, mc.allResults);
+
+        let out = "";
+        out += `Lump sum at retirement (nominal): ${formatCurrency(sim.lumpAtRetire)}\n`;
+        out += `Final legacy (real): ${formatCurrency(sim.finalLegacyReal)}\n\n`;
+
+        out += "Monte Carlo Results:\n";
+        out += `  Median final legacy: ${formatCurrency(mc.median)}\n`;
+        out += `  10th percentile: ${formatCurrency(mc.p10)}\n`;
+        out += `  90th percentile: ${formatCurrency(mc.p90)}\n`;
+        out += `  Probability of ruin: ${(mc.probRuin * 100).toFixed(2)}%\n\n`;
+
+        out += "Legacy Table (Nominal):\n";
+        out += formatLegacyTable(sim.legacyData) + "\n\n";
+
+        out += "Legacy Table (Real):\n";
+        out += formatLegacyTableReal(sim.legacyDataReal) + "\n";
+
+        resultsText.value = out;
     });
+
+    /* --------------------------------------------------
+     *  Footer Date Logic
+    -------------------------------------------------- */
+    const yearSpan = document.getElementById("currentyear");
+    const modSpan = document.getElementById("lastModified");
+
+    if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+    if (modSpan) modSpan.textContent = document.lastModified;
 });
