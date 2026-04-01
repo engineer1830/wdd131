@@ -68,10 +68,6 @@ button:hover {
     border-radius: 5px;
 }
 
-canvas {
-    margin-top: 20px;
-}
-
 header {
     display: flex;
     justify-content: space-between;
@@ -152,7 +148,11 @@ a:active {
  *                 RETIREMENT SIMULATOR
  * --------------------------------------------------------- */
 
-#retirement-simulator .form-section {
+main {
+    background: #e9ecef;
+}
+
+ #retirement-simulator .form-section {
     grid-column: 1 / -1;
     max-width: 380px;
     margin: 0 auto;
@@ -286,20 +286,31 @@ a:active {
     border-radius: 6px;
     padding: 1rem;
     border: 1px solid #e0e0e0;
+    overflow: auto;
 }
 
-#retirement-simulator .chart-wrapper {
-    margin-bottom: 1.5rem;
+#retirement-simulator .chart-wrapper
+{
+    /* margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    background: khaki; */
+    background: white;
+    padding: 1rem;
+    border:1px solid black;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+#retirement-simulator .chart-wrapper canvas
+{
+    margin-top: 0;
 }
 
 #retirement-simulator .chart-wrapper h3 {
     margin-bottom: 0.5rem;
     font-size: 1rem;
     color: #444;
-}
-
-.chart-wrapper {
-    margin-bottom: 2rem;
 }
 
 @media (max-width: 900px) {
