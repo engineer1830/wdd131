@@ -238,6 +238,10 @@ nav {
     content: "❌";
 }
 
+#menu {
+    display: none;
+}
+
 .navigation.open ul {
     display: flex;
 }
@@ -624,6 +628,11 @@ main a:visited {
 @media (max-width: 768px)
 {
 
+    #menu
+        {
+            display: flex;
+        }
+    
     nav {
         display: none;
         width: 100%;
