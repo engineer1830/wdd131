@@ -519,6 +519,15 @@ main a:visited {
    17. Phase Input + Cards
 -------------------------- */
 
+.phase-overview
+{
+    margin: 2rem 0;
+    padding: 1.5rem 2rem;
+    border: 2px solid #660033;
+    border-radius: 8px;
+    background: #fdf7fb;
+}
+
 .phase-divider {
     margin: 2rem auto;
     width: 90%;
