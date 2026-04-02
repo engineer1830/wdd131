@@ -47,7 +47,7 @@
                 </div>
     
     <main>
-        <h2>Phases - I want to build cards like the temples of various scenarios where they can be filtered</h2>
+        <h2>Phases of Savings</h2>
         <p>Phases respond to how much time you have before you need the money. I break it down as follows:</p>
         <ol>
             <li>Aggressive Phase (Young) - 100% stocks up until you are 50 as that means you still have 10-15 years from a typical retirement age of
@@ -64,8 +64,15 @@
             withdraw from your savings.
 
             * Withdrawal phase - if you retire early or in your 60s and stop contributing and start withdrawing, this is how the
-            money is preserved until you reach legacy phase.
-        </p>Have a js code that allows filtering of phases . . .</p>
+            money is preserved until you reach legacy phase.</p>
+            <hr class="phase-divider">
+        <section class="phase-input-section">
+            <h3>Find Your Investment Phases</h3>
+            <label for="ageInput">Enter your age (20-120):</label>
+            <input type="number" id="ageInput" min="1" max="120" placeholder="e.g., 25">
+            <p class="input-hint">Your phases will appear below automatically.</p>
+        </section>
+        <section class="gallery-grid"></section>
     </main>
     <footer class="footer">
         <p>&copy; <span id="currentyear"></span> | Jesse Hamilton | USA</p>
