@@ -40,7 +40,11 @@ products.forEach(product => {
     selectElement.appendChild(option);
 });
 
-let count = Number(localStorage.getItem("reviewCount")) || 0;
-count++;
-localStorage.setItem("reviewCount", count);
-document.querySelector("#reviewCount").textContent = count;
+const params = new URLSearchParams(window.location.search);
+const submitted = params.get("submitted");
+
+if (submitted === "true") {
+    let count = Number(localStorage.getItem("reviewCount")) || 0;
+    count++;
+    localStorage.setItem("reviewCount", count);
+}
