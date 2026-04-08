@@ -30,15 +30,17 @@ const products = [
         averagerating: 5.0
     }
 ];
-  
 const selectElement = document.getElementById("productName");
 
-products.forEach(product => { 
-    let option = document.createElement("option");
-    option.textContent = product.name;
-    option.value = product.id;
-    selectElement.appendChild(option);
-});
+if (selectElement) {
+    products.forEach(product => {
+        let option = document.createElement("option");
+        option.textContent = product.name;
+        option.value = product.id;
+        selectElement.appendChild(option);
+    });
+}
+
 
 const params = new URLSearchParams(window.location.search);
 const submitted = params.get("submitted");
