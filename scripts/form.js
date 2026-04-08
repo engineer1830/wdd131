@@ -30,6 +30,7 @@ const products = [
         averagerating: 5.0
     }
 ];
+
 const selectElement = document.getElementById("productName");
 
 if (selectElement) {
